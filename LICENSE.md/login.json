@@ -1,0 +1,197 @@
+{
+  "$jason": {
+    "head": {
+      "title": "login"
+    },
+    "body": {
+      "style": {
+        "border": "none",
+        "background": "#FFFFFF"
+      },
+      "header": {
+        "title": "Inicia sesion",
+        "style": {
+          "font": "AmericanTypewriter-Bold",
+          "background": "#FF6347",
+          "color": "#ffffff",
+          "height": "60",
+          "align": "center"
+        }
+      },
+      "sections": [
+        {
+          "items": [
+            {
+              "type": "space",
+              "style": {
+                "height": "10"
+              }
+            },
+            {
+              "type": "vertical",
+              "style": {
+                "align": "center"
+              },
+              "components": [
+                {
+                  "type": "image",
+                  "url": "https://snag.gy/Yx1UQJ.jpg",
+                  "style": {
+                    "width": "200",
+                    "corner_radius": "100",
+                    "margin_left": "30"
+                  }
+                }
+              ]
+            },
+            {
+              "type": "space",
+              "style": {
+                "height": "10"
+              }
+            },
+            {
+              "type": "space",
+              "height": "10"
+            },
+            {
+              "type": "textfield",
+              "name": "email",
+              "style": {
+                "size": "20",
+                "color": "#8bb92d",
+                "font": "HelveticaNeue-Bold",
+                "background": "#FFFFFF",
+                "padding": "20"
+              },
+              "placeholder": "email"
+            },
+            {
+              "type": "space",
+              "height": "5"
+            },
+            {
+              "type": "textfield",
+              "name": "password",
+              "placeholder": "password",
+              "style": {
+                "size": "20",
+                "color": "#8bb92d",
+                "font": "HelveticaNeue-Bold",
+                "background": "#FFFFFF",
+                "padding": "20",
+                "secure": "true",
+                "spellcheck": "false"
+              }
+            },
+            {
+              "type": "space",
+              "height": "5"
+            },
+            {
+              "type": "label",
+              "style": {
+                "width": "100%",
+                "align": "center",
+                "font": "Arial-ItalicMT",
+                "size": "30",
+                "padding": "6",
+                "background": "#FF6347",
+                "color": "#ffffff"
+              },
+              "text": "Entrar",
+              "action": {
+                "type": "$network.request",
+                "options": {
+                  "url": "http://sessionjason.herokuapp.com//users/sign_in.json",
+                  "method": "post",
+                  "data": {
+                    "email": "{{$get.email}}",
+                    "password": "{{$get.password}}"
+                  }
+                },
+                "success": {
+                  "type": "$session.set",
+                  "options": {
+                    "domain": "http://sessionjason.herokuapp.com/",
+                    "header": {
+                      "email": "{{$jason.email}}",
+                      "Authorization": "{{$jason.token}}"
+                    }
+                  },
+                  "success": {
+                    "type": "$href",
+                    "options": {
+                      "url": "http://sessionjason.herokuapp.com/mis_pedidos.json",
+                      "transition": "replace"
+                    }
+                  }
+                },
+                "error": {
+                  "type": "$util.banner",
+                  "options": {
+                    "title": "Error",
+                    "description": "Usuario o Password incorrectas"
+                  }
+                }
+              }
+            },
+            {
+              "type": "space",
+              "style": {
+                "height": "10"
+              }
+            },
+            {
+              "type": "label",
+              "text": "Registrarte",
+              "style": {
+                "align": "center",
+                "size": "30",
+                "padding": "6",
+                "font": "Arial-ItalicMT",
+                "color": "#ffffff",
+                "background": "#FF6347"
+              },
+              "action": {
+                "type": "$network.request",
+                "options": {
+                  "url": "http://myapp.heroku.com/users",
+                  "method": "post",
+                  "data": {
+                    "email": "{{$get.email}}",
+                    "password": "{{$get.password}}"
+                  }
+                },
+                "success": {
+                  "type": "$session.set",
+                  "options": {
+                    "domain": "http://myapp.herokuapp.com/",
+                    "header": {
+                      "email": "{{$jason.email}}",
+                      "Authorization": "{{$jason.authorization}}"
+                    }
+                  },
+                  "success": {
+                    "type": "$href",
+                    "options": {
+                      "url": "http://sessionjason.herokuapp.com/decide_user_type.json",
+                      "transition": "replace"
+                    }
+                  }
+                },
+                "error": {
+                  "type": "$util.banner",
+                  "options": {
+                    "title": "Ingresa tus credenciales",
+                    "description": "Ingresa un email y password correctos"
+                  }
+                }
+              }
+            }
+          ]
+        }
+      ]
+    }
+  }
+}
